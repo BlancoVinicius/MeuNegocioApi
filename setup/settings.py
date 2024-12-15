@@ -18,7 +18,7 @@ SECRET_KEY =  SECRET_KEY_VAR
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -31,7 +31,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'vendas_online',
+
+    # allauth autenticação
+    # 'allauth',
+    # 'allauth.account',
+    # 'allauth.socialaccount',
+    # 'django.contrib.sites',
 ]
+
+# AUTHENTICATION_BACKENDS = [
+#     'django.contrib.auth.backends.ModelBackend',
+#     'allauth.account.auth_backends.AuthenticationBackend',
+# ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -41,6 +52,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # Add the account middleware:
+    # "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = 'setup.urls'
@@ -119,6 +133,25 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# SOCIALACCOUNT_PROVIDERS = {
+#     'github': {
+#         'APP': {
+#             'client_id': 'Ov23lis5FdEeg6uJD7TA',
+#             'secret': '6c4bc9e45f48443b021f3fa2c91ca6e5018bfd83',
+#             'key': ''
+#         }
+#     }
+# }
+
+# LOGIN_REDIRECT_URL = '/'
+
+# LOGOUT_REDIRECT_URL = '/'
+
+# SOCIALACCOUNT_LOGIN_ON_GET = True
+
+# ACCOUNT_LOGOUT_ON_GET = True
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

@@ -1,3 +1,4 @@
+{% load static %}
 <html lang="pt-br">
 
 <head>
@@ -13,7 +14,13 @@
 <body class="text-center d-flex align-items-center justify-content-center" style="height: 100vh;">
     <div class="container">
         <div class="container w-50">
-            <form class="form-signin">
+            {% csrf_token %}
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="Submit">
+            </form>
+            {% comment %} <form class="form-signin">
                 <img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
                 <h1 class="h3 mb-3 font-weight-normal">Faça login</h1>
                 <label for="inputEmail" class="sr-only">Endereço de email</label>
@@ -33,7 +40,7 @@
                     <span>OU</span>
                 </div> -->
                 <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
-            </form>
+            </form> {% endcomment %}
         </div>
     </div>
 </body>
