@@ -149,3 +149,13 @@ LOGOUT_REDIRECT_URL = '/'
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
 ACCOUNT_LOGOUT_ON_GET = True
+
+ACCOUNT_EMAIL_REQUIRED=True
+
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+ACCOUNT_FORMS = {
+    'signup': 'vendas_online.forms.CustomSignupForm',
+    'login': 'vendas_online.forms.CustomLoginForm',
+}
+# ACCOUNT_SIGNUP_FORM_CLASS = 'vendas_online.forms.CustomSignupForm'
