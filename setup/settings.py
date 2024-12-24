@@ -142,7 +142,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #     }
 # }
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/home/'
 
 LOGOUT_REDIRECT_URL = '/'
 
@@ -152,6 +152,10 @@ ACCOUNT_LOGOUT_ON_GET = True
 
 ACCOUNT_EMAIL_REQUIRED=True
 
+# ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 ACCOUNT_FORMS = {
@@ -159,3 +163,10 @@ ACCOUNT_FORMS = {
     'login': 'vendas_online.forms.CustomLoginForm',
 }
 # ACCOUNT_SIGNUP_FORM_CLASS = 'vendas_online.forms.CustomSignupForm'
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'  # ou outro servidor SMTP
+# EMAIL_PORT = 587  # ou 465 para SSL
+# EMAIL_USE_TLS = True  # ou False, dependendo do seu servidor
+# EMAIL_HOST_USER = 'seu_email@gmail.com'  # Seu e-mail
+# EMAIL_HOST_PASSWORD = 'sua_senha'
