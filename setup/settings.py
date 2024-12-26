@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'vendas_online',
+    'conexao_api',
 
     # allauth autenticação
     'allauth',

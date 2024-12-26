@@ -22,6 +22,6 @@ code_challenge = generate_code_challenge(code_verifier)
 code_challenge_method = "S256"  # Método recomendado
 
 # Imprimir os valores gerados
-print("Code Verifier:", code_verifier)
-print("Code Challenge:", code_challenge)
-print("Code Challenge Method:", code_challenge_method)
+# print("Code Verifier:", code_verifier)
+# print("Code Challenge:", code_challenge)
+# print("Code Challenge Method:", code_challenge_method)
