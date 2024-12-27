@@ -18,10 +18,7 @@ class ConexaoApi:
         self.code_challenge = generate_code_challenge(self.code_verifier)
         self.code_challenge_method = code_challenge_method
     
-    # def get_code(self):
-    #     pass
-
-    def get_token(self, code:str,code_verifier:str):
+    def get_token(self, code:str,code_verifier:str) -> requests.Response:
         url = "https://api.mercadolibre.com/oauth/token"
 
         payload = {
@@ -38,10 +35,10 @@ class ConexaoApi:
         'content-type': 'application/x-www-form-urlencoded'
         }
 
-        response = requests.request("POST", url, headers=headers, data=payload)
-        return response.text
+        return requests.request("POST", url, headers=headers, data=payload)
 
-    def refresh_token(self, refresh_token:str):
+
+    def refresh_token(self, refresh_token:str) -> requests.Response:
         url = "https://api.mercadolibre.com/oauth/token"
 
         payload = {
@@ -56,7 +53,7 @@ class ConexaoApi:
         'content-type': 'application/x-www-form-urlencoded'
         }
 
-        response = requests.request("POST", url, headers=headers, data=payload)
-        return response.text
+        return requests.request("POST", url, headers=headers, data=payload)
+
 
 
