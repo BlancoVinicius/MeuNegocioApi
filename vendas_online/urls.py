@@ -6,6 +6,6 @@ app_name = 'vendas_online'
 
 urlpatterns = [
     path('login/', views.login, name='login'),
-    path('home/', views.home, name='cadastrar'),
+    path('home/', views.home, name='home'),
     path('', views.index, name='index'),
 ]
