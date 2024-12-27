@@ -8,5 +8,5 @@ urlpatterns = [
     path('', views.get_conexao, name='conexao'),
     path('code/', views.get_code, name='code_mercado_livre'),
     path('acces_token/', views.get_access_token, name='acces_token'),
-    
+    path('refresh_token/', views.get_refresh_token, name='refresh_token'),
 ]

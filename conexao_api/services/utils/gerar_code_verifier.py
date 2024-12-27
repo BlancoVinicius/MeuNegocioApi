@@ -16,7 +16,7 @@ def generate_code_challenge(code_verifier):
 
 # Gerar o code_verifier e code_challenge
 code_verifier = generate_code_verifier()
-code_challenge = generate_code_challenge(code_verifier)
+# code_challenge = generate_code_challenge(code_verifier)
 
 # Definir o code_challenge_method
 code_challenge_method = "S256"  # Método recomendado
