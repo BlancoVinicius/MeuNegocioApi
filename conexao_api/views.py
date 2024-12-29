@@ -7,7 +7,7 @@ from conexao_api.services.user.acces_token import ConexaoApi
 
 #importes para teste
 from django.http import JsonResponse, HttpResponseNotFound
-import json
+import json, requests
 
 # Create your views here.
 
@@ -26,8 +26,6 @@ def get_code(request):
     }
 
     token = UserToken.objects.filter(user=request.user).first()
-
-    print(conexao.code_verifier)
 
     if token is None:
         token = UserToken.objects.create(
@@ -80,42 +78,45 @@ def get_access_token(request):
 @login_required
 def get_refresh_token(request):
     
-    # get refresh_token
     token = UserToken.objects.get(user=request.user)
 
     refresh_token = token.refresh_token
-
+    print(refresh_token)
     conexao = ConexaoApi()
-    response = json.loads(conexao.refresh_token(refresh_token))
     
-    if response != None:
-        access_token = response.get('access_token')
-        refresh_token = response.get('refresh_token')
+    response = conexao.refresh_token(refresh_token)
+    
+    if response != None and response.status_code == 200 or response.status_code == 201:
+        response_json = json.loads(response.text)
+        access_token = response_json.get('access_token')
+        refresh_token = response_json.get('refresh_token')
 
         token.access_token = access_token
         token.refresh_token = refresh_token
-    
+        print(refresh_token)
         token.save()
-
-    return JsonResponse(response)
-
-
-import requests
-
-def verificar_token_acesso(request):
-    url = 'https://api.mercadolibre.com/users/me'
-    token = UserToken.objects.filter(user=request.user).first()
-    
-    headers = {
-        'Authorization': f'Bearer {token.access_token}'
-    }
-    
-    response = requests.get(url, headers=headers)
-    
-    if response.status_code == 200 or response.status_code == 201:
-        print(response.json())  # Retorna True e os dados do usuário
-    else:
-        print( "Token inválido ou expirado")
 
     return JsonResponse(response.json())
 
+@login_required
+def verificar_token_acesso(request):
+    try:
+
+        url = 'https://api.mercadolibre.com/users/me'
+        token = UserToken.objects.filter(user=request.user).first()
+        
+        if token.access_token is None:
+            return redirect('api:code_mercado_livre')
+        
+        headers = {
+            'Authorization': f'Bearer {token.access_token}'
+        }
+        
+        response = requests.get(url, headers=headers)
+        
+        if not response.status_code == 200 or not response.status_code == 201:
+            return redirect('api:refresh_token')
+        
+        return redirect('vendas_online:home')
+    except AttributeError as e:
+        return redirect('api:code_mercado_livre')
