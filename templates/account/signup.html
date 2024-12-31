@@ -1,0 +1,98 @@
+{% extends "layouts/base.html" %}
+{% load allauth i18n %}
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="\static\css\style.css">
+    <title>Cadastro</title>
+</head>
+
+<body class="d-flex align-items-center justify-content-center" style="height: 100vh;">
+
+    {% block content %}
+        <div>
+            {% element h1 %}
+            {% trans "Cadastre-se" %}
+            {% endelement %}
+        </div>
+
+        {% element p %}
+            Ja tem um login? Entre aqui  <a href="/login">sign in.</a>
+        {% endelement %}
+        {% if not SOCIALACCOUNT_ONLY %}
+        {% url 'account_signup' as action_url %}
+        {% element form form=form method="post" action=action_url tags="entrance,signup" %}
+        {% slot body %}
+        <div class="form-group">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <label for="{{field.id_for_label}}">{{field.label}}</label>
+                            {{field}}
+                            <br>
+                            <ul class="list-group">
+                                {% for erro in field.errors %}
+                                    <div class="alert alert-danger">{{erro}}</div>
+                                {% endfor %}
+                            </ul>
+                            {% if field.help_text %}
+                                <div class="minha-ajuda">
+                                    <p class="help-text">{{field.help_text}}</p>
+                                </div>
+                            {% endif %}
+                    {% endfor %}
+                        {{ redirect_field }}
+                    </div>
+                    {% endslot %}
+                    {% slot actions %}
+                        <button class="btn btn-outline-primary btn-lg btn-block" tags="prominent,signup" type="submit">
+                            Cadastrar
+                        </button>
+                    {% endslot %}
+                    
+                    {% endelement %}
+    {% endif %}
+    {% if PASSKEY_SIGNUP_ENABLED %}
+        {% element hr %}
+        {% endelement %}
+        {% element button href=signup_by_passkey_url tags="prominent,signup,outline,primary" %}
+        {% trans "Sign up using a passkey" %}
+        {% endelement %}
+        {% endif %}
+        {% if SOCIALACCOUNT_ENABLED %}
+        {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+        {% endif %}
+        
+    {% endblock content %}
+</body>
+<!-- <form class="form-signin" method="post" action="/accounts/signup/">
+    {% csrf_token %}
+    <label for="id_username">Nome de usuário:</label>
+    <br>
+    <input class="form-control" type="text" name="username" placeholder="Nome de usuário" autocomplete="username" minlength="1"
+        maxlength="150" required="" id="id_username">
+    <br>
+    <label for="id_email">E-mail (opcional):</label>
+    <br>
+    <input class="form-control" type="email" name="email" placeholder="Endereço de e-mail" autocomplete="email" maxlength="320"
+        id="id_email">
+    <br>
+    <label for="id_password1">Senha:</label>
+    <br>
+    <input class="form-control" type="password" name="password1" placeholder="Senha" autocomplete="new-password" required=""
+        aria-describedby="id_password1_helptext" id="id_password1">
+
+    <br>
+    <label for="id_password2">Senha (novamente):</label>
+    <br>
+    <input class="form-control" type="password" name="password2" placeholder="Senha (novamente)" autocomplete="new-password"
+        required="" id="id_password2">
+    <br>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">
+        Cadastrar
+    </button>
+
+</form> -->
