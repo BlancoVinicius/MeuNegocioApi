@@ -3,6 +3,8 @@ from vendas_online.forms import CustomSignupForm
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 def index(request):
+    if request.user.is_authenticated:
+        return redirect('vendas_online:home')
     return render(request, 'templates_vendas_onlina/entrada.html')
 
 def login(request):

@@ -24,9 +24,10 @@ def get_code(request):
         'code_challenge': conexao.code_challenge,
         'code_challenge_method': 'S256'
     }
-
+    # Verifica se o token existe
     token = UserToken.objects.filter(user=request.user).first()
 
+    #Cria o token se o token nao existir
     if token is None:
         token = UserToken.objects.create(
             user=request.user,
@@ -36,36 +37,43 @@ def get_code(request):
             user_id_api=None
         )
     else:
+        # Atualiza o code_verifier
         token.code_verifier = conexao.code_verifier 
         token.save()
-
+    # Adiciona o token ao dicionário de parâmetros
     query_string = urlencode(params)
+    # Concatena a URL base com a query string
     url = f"{base_url}{query_string}"
+    # Redireciona para a URL
     return redirect(url)
 
 @login_required
 def get_access_token(request):
 
     # param_url = request.GET['code']
-    code="TG-676f171f09b9ce00017564fd-2178079091"
-    
-    # buscar no banco de dados
+    code="TG-67741ca1905f520001e064e9-2184636570"
+   
+    # recupera o code_verifier
     user = request.user
     token = UserToken.objects.get(user=user)
     code_verifier = token.code_verifier
-
+    # cria o token
     conexao = ConexaoApi()
     response = conexao.get_token(code, code_verifier)
 
-    if response.status_code != 200 or response.status_code != 201: 
-        return HttpResponseNotFound("Pagina não encontarada: " + str(response.status_code))
-    
+    # verifica se a requisição foi bem-sucedida e se o token foi criado
+    if response.status_code not in [200, 201]: 
+        return HttpResponseNotFound("Pagina não encontarada: " + str(response.status_code) )
+        
+    # se o token foi criado, converte a resposta em um dicionário
     response = json.loads(response.text)
     
+    # recupera os dados do token
     access_token = response.get('access_token')
     user_id_api = response.get('user_id')
     refresh_token = response.get('refresh_token')
-
+    
+    # atualiza os dados do token
     token.access_token = access_token
     token.refresh_token = refresh_token
     token.user_id_api = user_id_api
@@ -77,46 +85,60 @@ def get_access_token(request):
 
 @login_required
 def get_refresh_token(request):
-    
-    token = UserToken.objects.get(user=request.user)
+    try:
+        # recupera o token
+        token = UserToken.objects.get(user=request.user)
+        # recupera o refresh_token
+        refresh_token = token.refresh_token
+        
+        conexao = ConexaoApi()
+        # renova o token
+        response = conexao.refresh_token(refresh_token)
+        # verifica se a requisição foi bem-sucedida
+        if response is not None and response.status_code not in {200, 201}:
+            return redirect('api:code_mercado_livre')
 
-    refresh_token = token.refresh_token
-    print(refresh_token)
-    conexao = ConexaoApi()
-    
-    response = conexao.refresh_token(refresh_token)
-    
-    if response != None and response.status_code == 200 or response.status_code == 201:
         response_json = json.loads(response.text)
+        # recupera os dados do token
         access_token = response_json.get('access_token')
         refresh_token = response_json.get('refresh_token')
 
+        # atualiza os dados do token
         token.access_token = access_token
         token.refresh_token = refresh_token
-        print(refresh_token)
-        token.save()
+        token.save() # salvar dados no banco
 
-    return JsonResponse(response.json())
+        # retorna a resposta
+        return JsonResponse(response.json())
+    except UserToken.DoesNotExist as e:
+         return redirect('vendas_online:home')
+
+
 
 @login_required
 def verificar_token_acesso(request):
     try:
-
         url = 'https://api.mercadolibre.com/users/me'
+        # recupera o token
         token = UserToken.objects.filter(user=request.user).first()
-        
+        # verifica se o token existe
         if token.access_token is None:
+            # se o token nao existir, redireciona para a pagina do mercado livre
             return redirect('api:code_mercado_livre')
         
+        # cria o header da requisição
         headers = {
             'Authorization': f'Bearer {token.access_token}'
         }
-        
+        # faz a requisição
         response = requests.get(url, headers=headers)
-        
-        if not response.status_code == 200 or not response.status_code == 201:
-            return redirect('api:refresh_token')
-        
+        # verifica se a requisição foi bem-sucedida
+        if response.status_code not in [200, 201]: 
+            # se nao for inválido, redireciona para a refresh token
+            return redirect('api:refresh_token') 
+        # se for váido, redireciona para a home
+        return JsonResponse(response.json())
         return redirect('vendas_online:home')
     except AttributeError as e:
+        # se o token nao existir, redireciona para a pagina do mercado livre
         return redirect('api:code_mercado_livre')
