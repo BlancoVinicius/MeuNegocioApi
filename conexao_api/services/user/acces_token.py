@@ -8,7 +8,7 @@ caminho_raiz = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..
 sys.path.append(caminho_raiz)
 
 from var_ambiente import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
-from conexao_api.services.utils.gerar_code_verifier import generate_code_challenge, code_verifier, code_challenge_method
+from conexao_api.services.utils._gerar_code_verifier import generate_code_challenge, code_verifier, code_challenge_method
 
 # Agora você pode importar o módulo
 
