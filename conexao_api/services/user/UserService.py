@@ -50,7 +50,7 @@ class UserTokenService:
     @staticmethod
     def get_access_token(request): # recebe o request + o code (falta implementar parametro o code)
          # param_url = request.GET['code']
-        code="TG-677d5284883ea100016dcc06-2184636570"
+        code="TG-678d6231d9842d0001afd9a2-2179923685"
     
         # recupera o code_verifier
         user = request.user

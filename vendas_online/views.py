@@ -1,5 +1,4 @@
 from django.shortcuts import redirect, render
-from vendas_online.forms import CustomSignupForm
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 def index(request):
@@ -17,3 +16,12 @@ def home(request):
     return render(
         request, 'templates_vendas_onlina/home.html',
     )
+
+
+# from django.http import HttpResponse
+# from django.views.decorators.csrf import csrf_exempt
+# @csrf_exempt
+# def teste(request):
+#     name = request.POST.get('nome')
+#     idade = request.POST.get('idade')
+#     return HttpResponse(f"{name} {idade}")

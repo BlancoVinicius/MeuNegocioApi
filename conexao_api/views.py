@@ -43,3 +43,25 @@ def verificar_token_acesso(request):
         return redirect('api:code_mercado_livre')
     except requests.HTTPError as e:
          return redirect('api:refresh_token')
+
+def publicar_item(request):
+     pass
+
+
+from .forms import ProductForm
+import json
+@login_required
+def create_product(request):
+    
+    if request.method == 'POST':
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            # Salvar o objeto Product no banco de dados
+            # j = json.loads(form.data)
+            # print(j)
+            data = json.loads(request.POST.get('pictures'))
+            return JsonResponse(data)
+            # return redirect('product_list')  # Redirecionar para a lista de produtos, por exemplo
+    
+    form = ProductForm()
+    return render(request, 'templates_conexao_api/criar_produtos.html', {'form': form})
