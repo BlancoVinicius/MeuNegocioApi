@@ -2,7 +2,7 @@ from urllib.parse import urlencode
 from django.http import HttpResponseNotFound
 import json, requests
 
-from conexao_api.models import UserToken
+from conexao_api.models.models import UserToken
 from conexao_api.services.user.acces_token import ConexaoApi
 
 #importes para teste

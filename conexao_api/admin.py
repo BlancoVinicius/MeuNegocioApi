@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib import admin
-from .models import UserToken
+from .models.models import UserToken
 
 class UserTokenAdmin(admin.ModelAdmin):
     

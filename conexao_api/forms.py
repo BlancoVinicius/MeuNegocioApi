@@ -1,8 +1,8 @@
 from django import forms
-from conexao_api.models import Product
+from conexao_api.models.anuncio import Anuncio
 
-class ProductForm(forms.ModelForm):
+class AnuncioForm(forms.ModelForm):
     class Meta:
-        model = Product
+        model = Anuncio
         fields = '__all__'
 

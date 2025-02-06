@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 import requests
-from conexao_api.models import UserToken
+from conexao_api.models.models import UserToken
 
 #importes para teste
 from django.http import JsonResponse
@@ -48,13 +48,13 @@ def publicar_item(request):
      pass
 
 
-from .forms import ProductForm
+from .forms import AnuncioForm
 import json
 @login_required
 def create_product(request):
     
     if request.method == 'POST':
-        form = ProductForm(request.POST)
+        form = AnuncioForm(request.POST)
         if form.is_valid():
             # Salvar o objeto Product no banco de dados
             # j = json.loads(form.data)
@@ -63,5 +63,5 @@ def create_product(request):
             return JsonResponse(data)
             # return redirect('product_list')  # Redirecionar para a lista de produtos, por exemplo
     
-    form = ProductForm()
+    form = AnuncioForm()
     return render(request, 'templates_conexao_api/criar_produtos.html', {'form': form})
